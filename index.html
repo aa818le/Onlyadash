@@ -148,7 +148,7 @@
 
     for (let j = 0; j < 5; j++) {
       const img = document.createElement("img");
-      img.src = "img/hidden.png";
+      img.src = "hidden.png";
       row.appendChild(img);
     }
 
@@ -158,7 +158,7 @@
 
   const coerceBool = (v) => (typeof v === 'boolean') ? v :
     (typeof v === 'string' ? v.trim().toLowerCase() === 'true' : false);
-  const boolToImg = (t) => t ? 'img/appleHealthy.png' : 'img/appleRotten.png';
+  const boolToImg = (t) => t ? 'appleHealthy.png' : 'appleRotten.png';
 
   STEPS.forEach((stepKey, index) => {
     db.ref(`${stepKey}/${USER_ID}`).on("value", (snap) => {
