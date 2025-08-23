@@ -1,216 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>PR HACKER PREMIUM</title>
-<style>
-  :root {
-    --page-pad: 10px;            /* tashqi bo‘sh joy */
-    --row-gap: 2px;              /* qatordan qatorga bo‘sh joy */
-    --col-gap: 2px;              /* iconlar oralig‘i */
-  }
-
-  html, body {
-    height: 100%;
-  }
-  body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #000;
-    color: #fff;
-    overflow: hidden;
-    display: grid;
-    grid-template-rows: auto 1fr;
-  }
-
-  /* Orqa fon zarrachalar */
-  #tsparticles {
-    position: fixed; inset: 0;
-    z-index: -1;
-  }
-
-  /* Status bar */
-  #statusBar {
-    text-align: center;
-    padding: 12px 8px;
-    background: rgba(0,0,0,0.5);
-    font-size: 20px;
-    font-weight: bold;
-    user-select: none;
-    white-space: nowrap;
-  }
-
-  /* Grid o‘rami */
-  #gridWrap {
-    display: grid;
-    place-items: center;         
-    padding: var(--page-pad);
-  }
-
-  /* Grid konteyner — pastdan tepaga */
-  #gridContainer {
-    display: grid;
-    grid-template-rows: repeat(10, 1fr);
-    row-gap: var(--row-gap);
-    transform: rotate(180deg); /* butun grid aylantirildi */
-  }
-
-  /* Qatorlar */
-  .row {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    column-gap: var(--col-gap);
-    align-items: center;
-    justify-items: center;
-    transform: rotate(180deg); /* rasmlarni yana to‘g‘rilash */
-    padding: 0;
-    background: transparent;
-  }
-
-  .row span { display: none !important; }
-
-  .row img {
-    width: 28px;
-    height: 28px;
-    margin: 0;
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-    object-fit: contain;
-    pointer-events: none;
-    user-select: none;
-  }
-
-  .size-guard {
-    max-width: 100%;
-    overflow: hidden;
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GIPER X</title>
+  <meta name="description" content="GiperX">
+  <meta name="author" content="ThanosX">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: url('images/bak.jpg') no-repeat center center/cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: white;
+    }
+    #controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px 20px;
+      background-color: rgba(0,0,0,0.8);
+      color: red;
+      font-size: 16px;
+      border-radius: 5px;
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+    #controls.show {
+      opacity: 1;
+      visibility: visible;
+    }
+    .container {
+      text-align: center;
+      background: rgba(0,0,0,0.4);
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.5);
+    }
+    .logo img {
+      width: 120px;
+      height: auto;
+      margin-bottom: 20px;
+    }
+    .input-field {
+      display: block;
+      width: 90%;
+      max-width: 300px;
+      padding: 10px;
+      margin: 10px auto 20px;
+      font-size: 16px;
+      text-align: center;
+      color: white;
+      background: transparent;
+      border: 2px solid white;
+      border-radius: 10px;
+      outline: none;
+    }
+    .input-field::placeholder {
+      color: rgba(255,255,255,0.6);
+    }
+    button, a {
+      display: block;
+      width: 90%;
+      max-width: 300px;
+      padding: 15px;
+      margin: 10px auto;
+      font-size: 16px;
+      text-decoration: none;
+      text-align: center;
+      color: white;
+      background: transparent;
+      border: 2px solid white;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover, a:hover {
+      background: rgba(255,255,255,0.1);
+    }
+  </style>
 </head>
 <body>
+  <div class="container">
+    <div class="logo">
+      <img src="images/logo.png" alt="Logo">
+    </div>
+    <input type="text" class="input-field" id="id" placeholder="ID">
+    <input type="text" class="input-field" id="activationCode" placeholder="Key">
+    <button id="loginBtn">Login</button>
+    <a href="https://t.me/appleking077s" target="_blank">TELEGRAM CHANNEL</a>
+  </div>
 
-<div id="tsparticles"></div>
+  <div id="controls"></div>
 
-<div id="statusBar">PR HACKER 15$</div>
+  <!-- Firebase JS SDK -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
-<div id="gridWrap">
-  <div id="gridContainer" class="size-guard"></div>
-</div>
+  <script>
+    // ✅ Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyB1_XCbC777hKwxlilhMeq5Hpty1dvDT1I",
+      authDomain: "giper-8fd92.firebaseapp.com",
+      databaseURL: "https://giper-8fd92-default-rtdb.firebaseio.com",
+      projectId: "giper-8fd92",
+      storageBucket: "giper-8fd92.firebasestorage.app",
+      messagingSenderId: "485740337398",
+      appId: "1:485740337398:web:YOUR_WEB_APP_ID"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
-<!-- tsparticles -->
-<script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
-<script>
-  tsParticles.load("tsparticles", {
-    background:{ color:{ value:"#000000" } },
-    particles:{
-      number:{ value:100 },
-      color:{ value:"#ffffff" },
-      shape:{ type:"circle" },
-      opacity:{ value:0.5 },
-      size:{ value:3 },
-      move:{ enable:true, speed:1, direction:"none", outModes:"out" },
-      links:{ enable:true, color:"#66e6b3", distance:150, opacity:0.4, width:1 }
-    },
-    interactivity:{ events:{ onHover:{ enable:true, mode:"repulse" }, resize:true } },
-    detectRetina:true
-  });
-</script>
-
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyB1_XCbC777hKwxlilhMeq5Hpty1dvDT1I",
-    authDomain: "giper-8fd92.firebaseapp.com",
-    databaseURL: "https://giper-8fd92-default-rtdb.firebaseio.com",
-    projectId: "giper-8fd92",
-    storageBucket: "giper-8fd92.appspot.com",
-    messagingSenderId: "485740337398",
-    appId: "1:485740337398:web:ab901fd4f28219ea5834d7"
-  };
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.database();
-
-  const USER_ID = "U8i3fi3YKeezO0rwlwqEov8kIeT2";
-  const STEPS = [
-    "XBET_1_23","XBET_1_54","XBET_1_93","XBET_2_41",
-    "XBET_4_02","XBET_6_71","XBET_11_18","XBET_27_92",
-    "XBET_69_93","XBET_349_68"
-  ];
-
-  const container = document.getElementById("gridContainer");
-  const rows = [];
-
-  for (let i = 0; i < STEPS.length; i++) {
-    const row = document.createElement("div");
-    row.classList.add("row");
-
-    for (let j = 0; j < 5; j++) {
-      const img = document.createElement("img");
-      img.src = "hidden.png";
-      row.appendChild(img);
+    // 🔹 Toast function
+    function showToast(message) {
+      const toast = document.getElementById('controls');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 4000);
     }
 
-    container.appendChild(row);
-    rows.push(row);
-  }
+    // 🔹 Login click event
+    document.getElementById('loginBtn').addEventListener('click', function () {
+      const id = document.getElementById('id').value.trim();
+      const code = document.getElementById('activationCode').value.trim();
 
-  const coerceBool = (v) => (typeof v === 'boolean') ? v :
-    (typeof v === 'string' ? v.trim().toLowerCase() === 'true' : false);
-  const boolToImg = (t) => t ? 'appleHealthy.png' : 'appleRotten.png';
+      if (!id) { showToast('Please enter your ID'); return; }
+      if (!code) { showToast('Please enter your Key'); return; }
 
-  STEPS.forEach((stepKey, index) => {
-    db.ref(`${stepKey}/${USER_ID}`).on("value", (snap) => {
-      const v = snap.val() || {};
-      const arr = [
-        coerceBool(v.apple1),
-        coerceBool(v.apple2),
-        coerceBool(v.apple3),
-        coerceBool(v.apple4),
-        coerceBool(v.apple5)
-      ];
-      const imgs = rows[index].querySelectorAll("img");
-      arr.forEach((val, i) => { imgs[i].src = boolToImg(val); });
-    });
-  });
+      db.ref('users/' + code).once('value').then(snapshot => {
+        if (!snapshot.exists()) {
+          showToast('Invalid or non-existent Key');
+          return;
+        }
 
-  function sizeToFit() {
-    const statusBar = document.getElementById('statusBar');
-    const pagePad = 10;
-    const rowGap = 2;
-    const colGap = 2;
-    const availH = window.innerHeight - statusBar.offsetHeight - (pagePad * 2);
-    const availW = window.innerWidth - (pagePad * 2);
-    const rowsCount = STEPS.length;
-    const colsCount = 5;
+        const data = snapshot.val();
+        const now = Date.now();
 
-    const totalRowGaps = (rowsCount - 1) * rowGap;
-    const rowHeight = Math.floor((availH - totalRowGaps) / rowsCount);
+        if (now > data.expires) {
+          showToast('Key expired');
+          return;
+        }
 
-    const totalColGaps = (colsCount - 1) * colGap;
-    const iconWFromWidth = Math.floor((availW - totalColGaps) / colsCount);
+        if (data.id && data.id !== id) {
+          showToast('key is already using');
+          return;
+        }
 
-    const iconSize = Math.max(12, Math.min(rowHeight, iconWFromWidth));
-    const containerWidth = (iconSize * colsCount) + totalColGaps;
-    container.style.width = containerWidth + 'px';
-    container.style.gridTemplateRows = `repeat(${rowsCount}, ${iconSize}px)`;
-    container.style.rowGap = rowGap + 'px';
+        db.ref('users/' + code + '/id').set(id);
 
-    rows.forEach(r => {
-      r.style.gridTemplateColumns = `repeat(${colsCount}, ${iconSize}px)`;
-      r.style.columnGap = colGap + 'px';
-      r.querySelectorAll('img').forEach(img => {
-        img.style.width = iconSize + 'px';
-        img.style.height = iconSize + 'px';
+        // Successful login
+        window.location.href = 'hack.html?id=' + encodeURIComponent(id) + '&key=' + encodeURIComponent(code);
+      }).catch(error => {
+        console.error(error);
+        showToast('this key Incorrect');
       });
     });
-  }
 
-  window.addEventListener('resize', sizeToFit);
-  window.addEventListener('orientationchange', sizeToFit);
-  sizeToFit();
-</script>
-
+    // Enter key
+    document.querySelectorAll('.input-field').forEach(el => {
+      el.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          document.getElementById('loginBtn').click();
+        }
+      });
+    });
+  </script>
 </body>
 </html>
